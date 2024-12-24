@@ -7,6 +7,7 @@ import React, {
   DragEvent as DragEventReact, // DragEvent generic for onDragStart motion library
   FormEvent,
 } from "react";
+// framer motion
 import { motion } from "motion/react";
 import { FiPlus, FiTrash, FiX } from "react-icons/fi";
 
