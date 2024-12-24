@@ -28,13 +28,6 @@ const Board = () => {
   return (
     <div className="flex h-full w-full gap-3 overflow-scroll p-12">
       <Column
-        title="Backlog"
-        column="backlog"
-        headingColor="text-neutral-500"
-        cards={cards}
-        setCards={setCards}
-      />
-      <Column
         title="TODO"
         column="todo"
         headingColor="text-yellow-200"
@@ -55,12 +48,12 @@ const Board = () => {
         cards={cards}
         setCards={setCards}
       />
-      <BurnBarrel setCards={setCards} />
+      <Trash setCards={setCards} />
     </div>
   );
 };
 
-// KOLOM, MAIN LOGIN HERE 🔥
+// KOLOM, MAIN LOGIC HERE 🔥
 type ColumnProps = {
   title: string;
   headingColor: string;
@@ -123,6 +116,11 @@ const Column = ({
     setActive(true);
   };
 
+  const handleDragLeave = () => {
+    clearHighlights();
+    setActive(false);
+  };
+
   const clearHighlights = (els?: HTMLElement[]) => {
     const indicators = els || getIndicators();
 
@@ -176,11 +174,6 @@ const Column = ({
     );
   };
 
-  const handleDragLeave = () => {
-    clearHighlights();
-    setActive(false);
-  };
-
   const filteredCards = cards.filter((c) => c.column === column);
 
   return (
@@ -223,7 +216,7 @@ const Card = ({ title, id, column, handleDragStart }: CardProps) => {
         draggable
         onDragStart={(e) => {
           if ("dataTransfer" in e) {
-            console.log(e.dataTransfer);
+            // console.log(e.dataTransfer);
             handleDragStart(e, { title, id, column });
           }
         }}
@@ -251,7 +244,7 @@ const DropIndicator = ({ beforeId, column }: DropIndicatorProps) => {
 };
 
 // DELETE on DROP
-const BurnBarrel = ({
+const Trash = ({
   setCards,
 }: {
   setCards: Dispatch<SetStateAction<CardType[]>>;
