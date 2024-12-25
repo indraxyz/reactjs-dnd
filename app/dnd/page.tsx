@@ -8,7 +8,7 @@ import React, {
   FormEvent,
 } from "react";
 // framer motion
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
 import { FiPlus, FiTrash, FiX } from "react-icons/fi";
 
 // MAIN background
@@ -70,8 +70,13 @@ const Column = ({
 }: ColumnProps) => {
   const [active, setActive] = useState(false);
 
-  const handleDragStart = (e: DragEvent, card: CardType) => {
-    if (e.dataTransfer != null) e.dataTransfer.setData("cardId", card.id);
+  const handleDragStart = (
+    e: MouseEvent | TouchEvent | PointerEvent | DragEvent,
+    card: CardType
+  ) => {
+    if ("dataTransfer" in e) {
+      if (e.dataTransfer !== null) e.dataTransfer.setData("cardId", card.id);
+    }
   };
 
   const handleDragEnd = (e: DragEventReact) => {
@@ -204,7 +209,10 @@ const Column = ({
 
 // CARD NOTE
 type CardProps = CardType & {
-  handleDragStart: (e: DragEvent, card: CardType) => void;
+  handleDragStart: (
+    e: MouseEvent | TouchEvent | PointerEvent | DragEvent,
+    card: CardType
+  ) => void;
 };
 const Card = ({ title, id, column, handleDragStart }: CardProps) => {
   return (
