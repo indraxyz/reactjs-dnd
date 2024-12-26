@@ -8,7 +8,7 @@ import React, {
   FormEvent,
 } from "react";
 // framer motion
-import { motion } from "framer-motion";
+import { motion } from "motion/react";
 import { FiPlus, FiTrash, FiX } from "react-icons/fi";
 
 // MAIN background
@@ -110,7 +110,7 @@ const Column = ({
         copy.splice(insertAtIndex, 0, cardToTransfer);
       }
 
-      setCards(copy);
+      setCards([...copy]);
     }
   };
 
@@ -180,7 +180,7 @@ const Column = ({
   };
 
   const filteredCards = cards.filter((c) => c.column === column);
-
+  
   return (
     <div className="w-56 shrink-0">
       <div className="mb-3 flex items-center justify-between">
@@ -215,6 +215,7 @@ type CardProps = CardType & {
   ) => void;
 };
 const Card = ({ title, id, column, handleDragStart }: CardProps) => {
+
   return (
     <>
       <DropIndicator beforeId={id} column={column} />
@@ -224,7 +225,6 @@ const Card = ({ title, id, column, handleDragStart }: CardProps) => {
         draggable
         onDragStart={(e) => {
           if ("dataTransfer" in e) {
-            // console.log(e.dataTransfer);
             handleDragStart(e, { title, id, column });
           }
         }}
