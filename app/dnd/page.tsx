@@ -180,7 +180,7 @@ const Column = ({
   };
 
   const filteredCards = cards.filter((c) => c.column === column);
-  
+
   return (
     <div className="w-56 shrink-0">
       <div className="mb-3 flex items-center justify-between">
@@ -215,7 +215,6 @@ type CardProps = CardType & {
   ) => void;
 };
 const Card = ({ title, id, column, handleDragStart }: CardProps) => {
-
   return (
     <>
       <DropIndicator beforeId={id} column={column} />
