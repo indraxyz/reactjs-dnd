@@ -115,3 +115,5 @@ const Card = ({ data, idx, dragStart, dragOver, dragEnd }: CardProps) => {
                 //   CARD
                 //   FORM
                 //   TRASH
+// drag & drop between column/category
+// recovery from TRASH
