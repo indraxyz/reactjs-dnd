@@ -48,7 +48,7 @@ const Column = ({ type }: ColumnProps) => {
     const idxDrop = datas.findIndex((el) => el.id === idDrop);
     let currentContent = JSON.parse(e.dataTransfer.getData("current"));
     const idxCurrent = datas.findIndex((el) => el.id === currentContent.id);
-    const copyDatas = [...datas];
+    let copyDatas = [...datas];
 
     if (dropItem?.type != currentContent.type) {
       console.log("cross");
@@ -59,7 +59,8 @@ const Column = ({ type }: ColumnProps) => {
 
       // copyDatas.splice(idxDrop, 0, copyDatas.splice(idxCurrent, 1)[0]);
       // delete old
-      copyDatas.splice(idxCurrent, 1);
+      // copyDatas.splice(idxCurrent, 1);
+      copyDatas = copyDatas.filter((c) => c.id !== currentContent.id);
       console.log(copyDatas);
       setDatas([...copyDatas]);
     } else {
