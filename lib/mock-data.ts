@@ -1,47 +1,47 @@
 const TODO = [
   {
     id: 1,
-    message: "john",
+    message: "Drink",
     type: "todo",
   },
   {
     id: 2,
-    message: "Rey",
+    message: "Movies",
     type: "todo",
   },
   {
     id: 3,
-    message: "Roi",
+    message: "Eat",
     type: "todo",
   },
   {
     id: 4,
-    message: "Dui",
+    message: "Travel",
     type: "todo",
   },
   {
     id: 5,
-    message: "IUD",
+    message: "Swimm",
     type: "todo",
   },
   {
     id: 6,
-    message: "dummy progress 6",
+    message: "Read",
     type: "progress",
   },
   {
     id: 7,
-    message: "dummy progress 7",
+    message: "Sleep",
     type: "progress",
   },
   {
     id: 8,
-    message: "dummy completed",
+    message: "Write",
     type: "completed",
   },
   {
     id: 9,
-    message: "dummy completed",
+    message: "Sing",
     type: "completed",
   },
 ];

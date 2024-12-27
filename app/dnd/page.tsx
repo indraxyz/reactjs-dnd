@@ -13,14 +13,21 @@ const Board = () => {
   const [todos, setTodos] = useState(TODO);
 
   return (
-    <div className="flex">
-      {/* TODO + FORM ADD */}
-      <Column type="todo" datas={todos} setDatas={setTodos} />
-      {/* PROGRESS */}
-      <Column type="progress" datas={todos} setDatas={setTodos} />
-      {/* COMPLETED */}
-      <Column type="completed" datas={todos} setDatas={setTodos} />
-      {/* TRASH */}
+    <div className="p-4">
+      {/* FORM ADD, TRASH */}
+      <div>
+        <span>form add</span>
+        <span>trash</span>
+      </div>
+      <div className="flex flex-col sm:flex-row space-y-8 sm:space-y-0 sm:space-x-4">
+        {/* TODO */}
+        <Column type="todo" datas={todos} setDatas={setTodos} />
+        {/* PROGRESS */}
+        <Column type="progress" datas={todos} setDatas={setTodos} />
+        {/* COMPLETED */}
+        <Column type="completed" datas={todos} setDatas={setTodos} />
+        {/* TRASH */}
+      </div>
     </div>
   );
 };
@@ -93,12 +100,17 @@ const Column = ({ type, datas, setDatas }: ColumnProps) => {
   };
 
   return (
-    <div className="w-1/3">
+    <div className="w-full sm:1/3 ">
+      <div className="flex items-center justify-between px-2">
+        <span>Title</span>
+        <span>9</span>
+      </div>
+
       {datas.filter((item) => item.type == type).length == 0 ? (
         <div
           className={`${
             hoverEmpty && "bg-slate-200"
-          } min-h-72 cursor-grab active:cursor-grabbing select-none`}
+          } min-h-20 cursor-grab active:cursor-grabbing select-none border-2 p-2 m-2 rounded-xl`}
           onDrop={(e) => onEmpty(e)}
           onDragOver={dragOver}
           onDragEnter={() => setHoverEmpty(true)}
@@ -132,11 +144,7 @@ type CardProps = {
 const Card = ({ data, dragStart, dragOver, dragEnd }: CardProps) => {
   const [hover, setHover] = useState(false);
   return (
-    <div
-      className={`${
-        hover && "bg-slate-200"
-      } cursor-grab active:cursor-grabbing`}
-    >
+    <div>
       <motion.div
         layout
         key={data.id}
@@ -150,7 +158,9 @@ const Card = ({ data, dragStart, dragOver, dragEnd }: CardProps) => {
         }}
         onDragEnter={() => setHover(true)}
         onDragLeave={() => setHover(false)}
-        className="h-20"
+        className={`${
+          hover && "bg-slate-200"
+        } cursor-grab active:cursor-grabbing border-2 p-2 m-2 rounded-xl min-h-20`}
       >
         {data.message}
       </motion.div>
