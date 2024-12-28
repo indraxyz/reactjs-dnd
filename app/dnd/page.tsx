@@ -1,6 +1,6 @@
 "use client";
 
-import React, {
+import {
   useState,
   DragEvent as DragEventReact,
   Dispatch,
@@ -8,26 +8,127 @@ import React, {
 } from "react";
 import { motion } from "motion/react";
 import { TODO } from "../../lib/mock-data";
+import { MdDelete, MdDeleteForever, MdAddBox } from "react-icons/md";
+
+import {
+  Modal,
+  ModalContent,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Button,
+  Textarea,
+} from "@nextui-org/react";
 
 const Board = () => {
   const [todos, setTodos] = useState(TODO);
+  const [deleteActive, setDeleteActive] = useState(false);
+  const [dialogAdd, setDialogAdd] = useState(false);
+  const [todo, setTodo] = useState("");
+
+  const submitTodo = () => {
+    const newTodo = {
+      id: Math.random(),
+      message: todo,
+      type: "todo",
+    };
+
+    setTodos([...todos, newTodo]);
+    setDialogAdd(false);
+  };
+
+  const onDeleteLeave = () => {
+    setDeleteActive(false);
+  };
+
+  const onDeleteOver = (e: DragEventReact) => {
+    e.preventDefault();
+    setDeleteActive(true);
+  };
+
+  const onDeleteDrop = (e: DragEventReact) => {
+    const currentContent = JSON.parse(e.dataTransfer.getData("current"));
+    setTodos((pv) => pv.filter((c) => c.id !== currentContent.id));
+    setDeleteActive(false);
+  };
 
   return (
     <div className="p-4">
       {/* FORM ADD, TRASH */}
-      <div>
-        <span>form add</span>
-        <span>trash</span>
+      <div className="flex items-center justify-between mb-4">
+        <button
+          className="border-2 border-gray-400 rounded-xl p-4 sm:p-8 active:bg-gray-200"
+          onClick={() => setDialogAdd(true)}
+        >
+          <MdAddBox className="text-3xl" />
+        </button>
+        <div
+          className={`border-2 border-gray-400 rounded-xl p-4 sm:p-8 ${
+            deleteActive && "bg-gray-200"
+          }`}
+          onDragOver={onDeleteOver}
+          onDrop={onDeleteDrop}
+          onDragLeave={onDeleteLeave}
+        >
+          {deleteActive ? (
+            <MdDeleteForever className="text-3xl animate-bounce" />
+          ) : (
+            <MdDelete className="text-3xl" />
+          )}
+        </div>
       </div>
       <div className="flex flex-col sm:flex-row space-y-8 sm:space-y-0 sm:space-x-4">
         {/* TODO */}
-        <Column type="todo" datas={todos} setDatas={setTodos} />
+        <Column title="📌 todo" type="todo" datas={todos} setDatas={setTodos} />
         {/* PROGRESS */}
-        <Column type="progress" datas={todos} setDatas={setTodos} />
+        <Column
+          title="🔃 progress"
+          type="progress"
+          datas={todos}
+          setDatas={setTodos}
+        />
         {/* COMPLETED */}
-        <Column type="completed" datas={todos} setDatas={setTodos} />
-        {/* TRASH */}
+        <Column
+          title="✅ completed"
+          type="completed"
+          datas={todos}
+          setDatas={setTodos}
+        />
       </div>
+
+      {/* MODAL ADD */}
+      <Modal isOpen={dialogAdd} onOpenChange={(op) => setDialogAdd(op)}>
+        <ModalContent>
+          {dialogAdd && (
+            <>
+              <ModalHeader className="flex flex-col gap-1">
+                Add New TODO
+              </ModalHeader>
+              <ModalBody>
+                <Textarea
+                  className="max-w-sm"
+                  label="TODO"
+                  labelPlacement="outside"
+                  placeholder="........"
+                  onValueChange={(str) => setTodo(str)}
+                />
+              </ModalBody>
+              <ModalFooter>
+                <Button
+                  color="danger"
+                  variant="light"
+                  onPress={() => setDialogAdd(false)}
+                >
+                  Cancel
+                </Button>
+                <Button color="primary" onPress={() => submitTodo()}>
+                  Submit
+                </Button>
+              </ModalFooter>
+            </>
+          )}
+        </ModalContent>
+      </Modal>
     </div>
   );
 };
@@ -40,12 +141,13 @@ type TodoProps = {
   type: string;
 };
 type ColumnProps = {
+  title: string;
   type: string;
   datas: TodoProps[];
   setDatas: Dispatch<SetStateAction<TodoProps[]>>;
 };
 
-const Column = ({ type, datas, setDatas }: ColumnProps) => {
+const Column = ({ title, type, datas, setDatas }: ColumnProps) => {
   const [hoverEmpty, setHoverEmpty] = useState(false);
 
   const dragStart = (e: DragStartType, data: TodoProps) => {
@@ -99,18 +201,20 @@ const Column = ({ type, datas, setDatas }: ColumnProps) => {
     setDatas([...copyDatas]);
   };
 
+  const filteredDatas = datas.filter((item) => item.type == type);
+
   return (
     <div className="w-full sm:1/3 ">
-      <div className="flex items-center justify-between px-2">
-        <span>Title</span>
-        <span>9</span>
+      <div className="flex items-center justify-between px-2 underline-offset-4 underline decoration-2">
+        <span className="uppercase font-bold ">{title}</span>
+        <span>{filteredDatas.length}</span>
       </div>
 
-      {datas.filter((item) => item.type == type).length == 0 ? (
+      {filteredDatas.length == 0 ? (
         <div
           className={`${
-            hoverEmpty && "bg-slate-200"
-          } min-h-20 cursor-grab active:cursor-grabbing select-none border-2 p-2 m-2 rounded-xl`}
+            hoverEmpty && "bg-gray-200"
+          } min-h-20 cursor-grab active:cursor-grabbing select-none border-2 border-gray-300 p-2 m-2 rounded-xl`}
           onDrop={(e) => onEmpty(e)}
           onDragOver={dragOver}
           onDragEnter={() => setHoverEmpty(true)}
@@ -119,17 +223,15 @@ const Column = ({ type, datas, setDatas }: ColumnProps) => {
           <span>empty</span>
         </div>
       ) : (
-        datas
-          .filter((item) => item.type == type)
-          .map((d) => (
-            <Card
-              key={d.id}
-              data={d}
-              dragStart={dragStart}
-              dragOver={dragOver}
-              dragEnd={dragEnd}
-            />
-          ))
+        filteredDatas.map((d) => (
+          <Card
+            key={d.id}
+            data={d}
+            dragStart={dragStart}
+            dragOver={dragOver}
+            dragEnd={dragEnd}
+          />
+        ))
       )}
     </div>
   );
@@ -159,8 +261,8 @@ const Card = ({ data, dragStart, dragOver, dragEnd }: CardProps) => {
         onDragEnter={() => setHover(true)}
         onDragLeave={() => setHover(false)}
         className={`${
-          hover && "bg-slate-200"
-        } cursor-grab active:cursor-grabbing border-2 p-2 m-2 rounded-xl min-h-20`}
+          hover && "bg-gray-200"
+        } cursor-grab active:cursor-grabbing border-gray-300 border-2 p-2 m-2 rounded-xl min-h-20`}
       >
         {data.message}
       </motion.div>
