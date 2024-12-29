@@ -16,7 +16,10 @@ export default function Home() {
           </ol>
         </div>
 
-        <span>Tech-Stack: typescript, ReactJs, NextJs, tailwind, motion</span>
+        <span>
+          Tech-Stack: typescript, ReactJs, NextJs, NextUi, tailwind, framer
+          motion
+        </span>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
