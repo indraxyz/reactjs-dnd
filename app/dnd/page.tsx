@@ -276,7 +276,7 @@ const Card = ({
         }}
         onDragEnter={() => setHover(true)}
         onDragLeave={() => setHover(false)}
-        onMouseEnter={() => setMouseHover(true)}
+        onMouseOver={() => setMouseHover(true)}
         onMouseLeave={() => setMouseHover(false)}
         className={`${
           hover ? "bg-gray-200" : "bg-gray-50"
