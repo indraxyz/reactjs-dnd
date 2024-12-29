@@ -20,6 +20,7 @@ import {
   Textarea,
 } from "@nextui-org/react";
 
+// BOARD COMPONENT
 const Board = () => {
   const [todos, setTodos] = useState(TODO);
   const [deleteActive, setDeleteActive] = useState(false);
@@ -33,7 +34,7 @@ const Board = () => {
       type: "todo",
     };
 
-    setTodos([...todos, newTodo]);
+    setTodos([newTodo, ...todos]);
     setDialogAdd(false);
   };
 
@@ -53,7 +54,7 @@ const Board = () => {
   };
 
   return (
-    <div className="p-4">
+    <div className="p-4 min-h-screen">
       {/* FORM ADD, TRASH */}
       <div className="flex items-center justify-between mb-4">
         <button
@@ -146,7 +147,7 @@ type ColumnProps = {
   datas: TodoProps[];
   setDatas: Dispatch<SetStateAction<TodoProps[]>>;
 };
-
+// COLUMN COMPONENT
 const Column = ({ title, type, datas, setDatas }: ColumnProps) => {
   const [hoverEmpty, setHoverEmpty] = useState(false);
 
@@ -161,7 +162,6 @@ const Column = ({ title, type, datas, setDatas }: ColumnProps) => {
   };
 
   const dragEnd = (e: DragEventReact, idDrop?: number) => {
-    // CEK BEDA TYPE
     const dropItem = datas.find((i) => i.id === idDrop);
     const idxDrop = datas.findIndex((el) => el.id === idDrop);
     let currentContent = JSON.parse(e.dataTransfer.getData("current"));
@@ -201,6 +201,7 @@ const Column = ({ title, type, datas, setDatas }: ColumnProps) => {
     setDatas([...copyDatas]);
   };
 
+  // separate base on type
   const filteredDatas = datas.filter((item) => item.type == type);
 
   return (
@@ -213,7 +214,7 @@ const Column = ({ title, type, datas, setDatas }: ColumnProps) => {
       {filteredDatas.length == 0 ? (
         <div
           className={`${
-            hoverEmpty && "bg-gray-200"
+            hoverEmpty ? "bg-gray-200" : "bg-gray-50"
           } min-h-20 cursor-grab active:cursor-grabbing select-none border-2 border-gray-300 p-2 m-2 rounded-xl`}
           onDrop={(e) => onEmpty(e)}
           onDragOver={dragOver}
@@ -237,6 +238,7 @@ const Column = ({ title, type, datas, setDatas }: ColumnProps) => {
   );
 };
 
+// CARD COMPONENT
 type CardProps = {
   data: TodoProps;
   dragStart: (e: DragStartType, data: TodoProps) => void;
@@ -261,7 +263,7 @@ const Card = ({ data, dragStart, dragOver, dragEnd }: CardProps) => {
         onDragEnter={() => setHover(true)}
         onDragLeave={() => setHover(false)}
         className={`${
-          hover && "bg-gray-200"
+          hover ? "bg-gray-200" : "bg-gray-50"
         } cursor-grab active:cursor-grabbing border-gray-300 border-2 p-2 m-2 rounded-xl min-h-20`}
       >
         {data.message}
@@ -269,17 +271,3 @@ const Card = ({ data, dragStart, dragOver, dragEnd }: CardProps) => {
     </div>
   );
 };
-
-// https://www.freecodecamp.org/news/reactjs-implement-drag-and-drop-feature-without-using-external-libraries-ad8994429f1a/
-// https://dev.to/wolfmath/drag-and-drop-with-react-519m
-// https://www.codinn.dev/projects/react-drag-and-drop-without-library
-
-// 4 categories TASK = TODO, PROGRESS, COMPLETED
-// COLUMN RESPONSIVE
-// COMPONENTS= CONTAINER, , , ,
-// COLUMN
-//   CARD
-//   FORM
-//   TRASH
-// drag & drop between column-type
-// https://salehmubashar.com/blog/5-cool-animations-in-react-with-framer-motion

@@ -2,13 +2,21 @@ import Link from "next/link";
 
 export default function Home() {
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
+    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 ">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <span>ReactJs Drag & Drop</span>
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left">
-          <li className="mb-2">Feature</li>
-          <li>Feature</li>
-        </ol>
+        <span>TODO App with Drag & Drop functionality</span>
+        <div>
+          <span>Features :</span>
+          <ol className="list-inside list-decimal text-sm text-left space-y-2">
+            <li>Responsive Ui (dekstop-mobile)</li>
+            <li>Todo types : todo, progress, completed.</li>
+            <li>Create new TODO</li>
+            <li>Delete TODO with drag & drop</li>
+            <li>Rearrange (Drag & Drop) TODO in same or different type</li>
+          </ol>
+        </div>
+
+        <span>Tech-Stack: typescript, ReactJs, NextJs, tailwind, motion</span>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           <a
