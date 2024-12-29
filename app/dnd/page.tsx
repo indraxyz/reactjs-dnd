@@ -8,7 +8,7 @@ import {
 } from "react";
 import { motion } from "motion/react";
 import { TODO } from "../../lib/mock-data";
-import { MdDelete, MdDeleteForever, MdAddBox } from "react-icons/md";
+import { MdDelete, MdDeleteForever, MdAddBox, MdClose } from "react-icons/md";
 
 import {
   Modal,
@@ -201,6 +201,11 @@ const Column = ({ title, type, datas, setDatas }: ColumnProps) => {
     setDatas([...copyDatas]);
   };
 
+  // DELETE CARD DIRECT
+  const deleteCard = (id: number) => {
+    setDatas((pv) => pv.filter((c) => c.id !== id));
+  };
+
   // separate base on type
   const filteredDatas = datas.filter((item) => item.type == type);
 
@@ -231,6 +236,7 @@ const Column = ({ title, type, datas, setDatas }: ColumnProps) => {
             dragStart={dragStart}
             dragOver={dragOver}
             dragEnd={dragEnd}
+            deleteCard={deleteCard}
           />
         ))
       )}
@@ -244,28 +250,45 @@ type CardProps = {
   dragStart: (e: DragStartType, data: TodoProps) => void;
   dragOver: (e: DragEventReact) => void;
   dragEnd: (e: DragEventReact, idx: number) => void;
+  deleteCard: (id: number) => void;
 };
-const Card = ({ data, dragStart, dragOver, dragEnd }: CardProps) => {
+const Card = ({
+  data,
+  dragStart,
+  dragOver,
+  dragEnd,
+  deleteCard,
+}: CardProps) => {
   const [hover, setHover] = useState(false);
+  const [mouseHover, setMouseHover] = useState(false);
   return (
-    <div>
+    <div className="relative">
       <motion.div
         layout
         key={data.id}
         layoutId={`${data.id}`}
         draggable
         onDragStart={(e) => dragStart(e, data)}
-        onDragOver={(e) => dragOver(e)}
+        onDragOver={dragOver}
         onDrop={(e) => {
           setHover(false);
           dragEnd(e, data.id);
         }}
         onDragEnter={() => setHover(true)}
         onDragLeave={() => setHover(false)}
+        onMouseEnter={() => setMouseHover(true)}
+        onMouseLeave={() => setMouseHover(false)}
         className={`${
           hover ? "bg-gray-200" : "bg-gray-50"
-        } cursor-grab active:cursor-grabbing border-gray-300 border-2 p-2 m-2 rounded-xl min-h-20`}
+        }  cursor-grab active:cursor-grabbing border-gray-300 border-2 p-2 m-2 rounded-xl min-h-20`}
       >
+        {mouseHover && (
+          <MdClose
+            className="absolute right-5 top-2 cursor-pointer hover:bg-gray-300 rounded-full text-xl hover:p-1"
+            onClick={() => deleteCard(data.id)}
+          />
+        )}
+
         {data.message}
       </motion.div>
     </div>
