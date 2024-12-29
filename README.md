@@ -21,7 +21,8 @@ todoApp Reactjs with drag drop functionality use : typescript, ReactJs, NextJs, 
 
     REQUIRED Node.js installed
 
-    Copy/download project folder
+    Copy/download project folder from github or google drive
+    extract .zip (if download from google drive or github)
     Open cmd/terminal, change to the project directory
     Install package via terminal/cmd with “npm install”
     Run project with “npm run dev”
