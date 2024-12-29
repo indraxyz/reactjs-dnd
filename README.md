@@ -1,10 +1,11 @@
-todoApp Reactjs with drag drop functionality use : typescript, ReactJs, NextJs, tailwind, motion.
+todoApp Reactjs with drag drop functionality use : typescript, ReactJs, NextJs, NextUi, tailwind, motion.
 
 ## Tech stacks
 
 - typescript
 - reactjs
 - nextjs
+- nextUi
 - tailwind
 - framer motion
 
