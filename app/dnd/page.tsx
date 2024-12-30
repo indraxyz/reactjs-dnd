@@ -262,7 +262,7 @@ const Card = ({
   const [hover, setHover] = useState(false);
   const [mouseHover, setMouseHover] = useState(false);
   return (
-    <div className="translate-x-0">
+    <div className="card">
       <motion.div
         layout
         key={data.id}
