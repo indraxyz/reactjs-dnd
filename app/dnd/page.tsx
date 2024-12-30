@@ -99,7 +99,7 @@ const Board = () => {
 
       {/* MODAL ADD */}
       <Modal isOpen={dialogAdd} onOpenChange={(op) => setDialogAdd(op)}>
-        <ModalContent>
+        <ModalContent className="max-w-sm">
           {dialogAdd && (
             <>
               <ModalHeader className="flex flex-col gap-1">
@@ -107,7 +107,7 @@ const Board = () => {
               </ModalHeader>
               <ModalBody>
                 <Textarea
-                  className="max-w-sm"
+                  // className="max-w-xs"
                   label="TODO"
                   labelPlacement="outside"
                   placeholder="........"
