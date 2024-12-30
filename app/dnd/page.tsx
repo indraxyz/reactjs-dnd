@@ -262,7 +262,7 @@ const Card = ({
   const [hover, setHover] = useState(false);
   const [mouseHover, setMouseHover] = useState(false);
   return (
-    <div className="relative">
+    <div className="translate-x-0">
       <motion.div
         layout
         key={data.id}
@@ -279,12 +279,12 @@ const Card = ({
         onMouseOver={() => setMouseHover(true)}
         onMouseLeave={() => setMouseHover(false)}
         className={`${
-          hover ? "bg-gray-200" : "bg-gray-50"
-        }  cursor-grab active:cursor-grabbing border-gray-300 border-2 p-2 m-2 rounded-xl min-h-20`}
+          hover ? "bg-gray-200" : "bg-gray-100"
+        } relative cursor-grab active:cursor-grabbing p-2 m-2 rounded-xl min-h-20`}
       >
         {mouseHover && (
           <MdClose
-            className="absolute right-5 top-2 cursor-pointer hover:bg-gray-300 rounded-full text-xl hover:p-1"
+            className="absolute right-3 top-2 cursor-pointer hover:bg-gray-300 rounded-full text-xl hover:p-0.5"
             onClick={() => deleteCard(data.id)}
           />
         )}
